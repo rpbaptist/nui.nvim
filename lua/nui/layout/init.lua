@@ -42,13 +42,7 @@ local function apply_workaround_for_float_relative_position_issue_18925(layout)
   vim.schedule(function()
     -- check in case layout was immediately hidden or unmounted
     if layout.winid == winids[1] and vim.api.nvim_win_is_valid(winids[1]) then
-      -- filter out invalid window IDs before using them
-      local valid_winids = {}
-      for i = 1, winids_len do
-        if vim.api.nvim_win_is_valid(winids[i]) then
-          table.insert(valid_winids, winids[i])
-        end
-      end
+      local valid_winids = vim.tbl_filter(vim.api.nvim_win_is_valid, winids)
 
       if #valid_winids > 0 then
         vim.cmd(
